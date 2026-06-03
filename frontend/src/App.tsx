@@ -212,7 +212,7 @@ export default function App() {
             isAuthenticated ? (
               <Navigate to="/dashboard" replace />
             ) : (
-              <SignupPage />
+              <SignupPage onLoginSuccess={handleLoginSuccess} />
             )
           }
         />
@@ -222,7 +222,7 @@ export default function App() {
             isAuthenticated ? (
               <Navigate to="/dashboard" replace />
             ) : (
-              <SignupPage />
+              <SignupPage onLoginSuccess={handleLoginSuccess} />
             )
           }
         />

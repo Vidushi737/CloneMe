@@ -3,7 +3,11 @@ import { useNavigate, Link } from 'react-router-dom';
 import { UserPlus, Mail, Lock, User, AlertCircle, CheckCircle } from 'lucide-react';
 import api from '../services/api';
 
-export default function Signup() {
+interface SignupProps {
+  onLoginSuccess?: (token: string, user: any) => void;
+}
+
+export default function Signup({ onLoginSuccess }: SignupProps) {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -23,32 +27,39 @@ export default function Signup() {
     setLoading(true);
 
     try {
-  console.log("Sending:", { username, email, password });
+      // Step 1: Register the user
+      await api.post('/auth/register', {
+        username,
+        email,
+        password
+      });
 
-  const response = await api.post('/auth/register', {
-    username,
-    email,
-    password
-  });
+      // Step 2: Auto-login with the same credentials
+      const loginResponse = await api.post('/auth/login', { email, password });
+      const { access_token } = loginResponse.data;
 
-  console.log("Success:", response.data);
+      // Step 3: Get user profile
+      const profileResponse = await api.get('/auth/me', {
+        headers: { Authorization: `Bearer ${access_token}` }
+      });
 
-  setSuccess(true);
+      setSuccess(true);
+
+      // Step 4: Store auth and redirect to dashboard
+      if (onLoginSuccess) {
+        onLoginSuccess(access_token, profileResponse.data);
+      }
       setTimeout(() => {
-        navigate('/login');
-      }, 2000);
+        navigate('/dashboard');
+      }, 1000);
     } catch (err: any) {
-  console.log("ERROR:", err);
-  console.log("RESPONSE:", err.response);
-  console.log("DATA:", err.response?.data);
-
-  setError(
-    err.response?.data?.detail ||
-    JSON.stringify(err.response?.data) ||
-    err.message ||
-    'Could not complete registration.'
-  );
-} finally {
+      setError(
+        err.response?.data?.detail ||
+        JSON.stringify(err.response?.data) ||
+        err.message ||
+        'Could not complete registration.'
+      );
+    } finally {
       setLoading(false);
     }
   };
@@ -80,7 +91,7 @@ export default function Signup() {
         {success && (
           <div className="flex items-center gap-2 mb-6 p-3.5 bg-emerald-500/20 border border-emerald-500/30 text-emerald-200 text-sm rounded-lg">
             <CheckCircle className="w-5 h-5 shrink-0" />
-            <span>Registration successful! Redirecting to sign in...</span>
+            <span>Registration successful! Redirecting to dashboard...</span>
           </div>
         )}
 
