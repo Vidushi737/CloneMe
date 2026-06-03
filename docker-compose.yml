@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: cloneme-db
+    restart: always
+    environment:
+      POSTGRES_USER: cloneme
+      POSTGRES_PASSWORD: cloneme_secure_pass
+      POSTGRES_DB: cloneme
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: cloneme-chromadb
+    restart: always
+    ports:
+      - "8001:8000"
+    volumes:
+      - chromadb_data:/chroma/chroma
+
+  backend:
+    build:
+      context: .
+      dockerfile: docker/backend.Dockerfile
+    container_name: cloneme-backend
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://cloneme:cloneme_secure_pass@db:5432/cloneme
+      - CHROMA_HOST=chromadb
+      - CHROMA_PORT=8000
+      - JWT_SECRET=supersecretjwtkeyforclonemedigitaltwinplatformdevelopmentonly123!
+      - JWT_ALGORITHM=HS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES=1440
+      - GEMINI_API_KEY=YOUR_GEMINI_API_KEY_HERE
+      - CORS_ORIGINS=["http://localhost:5173", "http://localhost:3000"]
+    depends_on:
+      - db
+      - chromadb
+    volumes:
+      - ./backend:/app
+
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/frontend.Dockerfile
+    container_name: cloneme-frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
+  chromadb_data:
