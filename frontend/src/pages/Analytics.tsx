@@ -1,17 +1,17 @@
 import { useState, useEffect } from 'react';
-import { 
-  LineChart, 
-  Line, 
-  BarChart, 
-  Bar, 
-  PieChart, 
-  Pie, 
-  Cell, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
-  ResponsiveContainer 
+import {
+  LineChart,
+  Line,
+  BarChart,
+  Bar,
+  PieChart,
+  Pie,
+  Cell,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer
 } from 'recharts';
 import { LineChart as ChartIcon, Sparkles, Calendar, Activity } from 'lucide-react';
 import api from '../services/api';
@@ -158,25 +158,25 @@ export default function Analytics() {
                 <LineChart data={lineData} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#161e31" />
                   <XAxis dataKey="date" stroke="#64748b" fontSize={11} fontWeight={600} />
-                  <YAxis 
-                    domain={[1, 6]} 
+                  <YAxis
+                    domain={[1, 6]}
                     ticks={[1, 2, 3, 4, 5, 6]}
                     tickFormatter={(val) => {
                       const labels = ['', 'Stressed', 'Sad', 'Neutral', 'Motivated', 'Happy', 'Excited'];
                       return labels[val] || '';
                     }}
-                    stroke="#64748b" 
-                    fontSize={10} 
+                    stroke="#64748b"
+                    fontSize={10}
                     fontWeight={600}
                   />
                   <Tooltip content={<CustomTooltip />} />
-                  <Line 
-                    type="monotone" 
-                    dataKey="moodValue" 
-                    stroke="#6366f1" 
-                    strokeWidth={3} 
-                    dot={{ fill: '#6366f1', r: 5 }} 
-                    activeDot={{ r: 8 }} 
+                  <Line
+                    type="monotone"
+                    dataKey="moodValue"
+                    stroke="#6366f1"
+                    strokeWidth={3}
+                    dot={{ fill: '#6366f1', r: 5 }}
+                    activeDot={{ r: 8 }}
                   />
                 </LineChart>
               </ResponsiveContainer>

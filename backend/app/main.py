@@ -16,7 +16,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title=settings.PROJECT_NAME,
     description="CloneMe - AI-Powered Digital Twin Platform API",
-    version="1.0.0",a
+    version="1.0.0",
     lifespan=lifespan
 )
 

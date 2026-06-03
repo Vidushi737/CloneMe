@@ -34,7 +34,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
       });
       
       onLoginSuccess(access_token, profileResponse.data);
-      navigate('/');
+      navigate('/dashboard');
     } catch (err: any) {
       setError(
         err.response?.data?.detail || 

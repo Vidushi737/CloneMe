@@ -23,17 +23,32 @@ export default function Signup() {
     setLoading(true);
 
     try {
-      await api.post('/auth/register', { username, email, password });
-      setSuccess(true);
+  console.log("Sending:", { username, email, password });
+
+  const response = await api.post('/auth/register', {
+    username,
+    email,
+    password
+  });
+
+  console.log("Success:", response.data);
+
+  setSuccess(true);
       setTimeout(() => {
         navigate('/login');
       }, 2000);
     } catch (err: any) {
-      setError(
-        err.response?.data?.detail || 
-        'Could not complete registration. Ensure values are unique and correct.'
-      );
-    } finally {
+  console.log("ERROR:", err);
+  console.log("RESPONSE:", err.response);
+  console.log("DATA:", err.response?.data);
+
+  setError(
+    err.response?.data?.detail ||
+    JSON.stringify(err.response?.data) ||
+    err.message ||
+    'Could not complete registration.'
+  );
+} finally {
       setLoading(false);
     }
   };
