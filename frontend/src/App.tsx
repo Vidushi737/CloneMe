@@ -12,6 +12,7 @@ import {
   Moon,
   Sun,
   LogOut,
+  Menu,
 } from "lucide-react";
 
 /* ---- Import real page components ---- */
@@ -72,6 +73,8 @@ function SidebarLayout({
   onLogout: () => void;
   children: ReactNode;
 }) {
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+
   const navItems = [
     { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
     { to: "/journals", label: "Journals", icon: BookOpen },
@@ -84,14 +87,36 @@ function SidebarLayout({
   ];
 
   return (
-    <div className="flex h-screen bg-slate-50 dark:bg-[#0b0f19] text-slate-800 dark:text-slate-100">
-      <aside className="w-64 bg-white dark:bg-[#161e31] border-r border-slate-200 dark:border-slate-800 flex flex-col justify-between p-4">
+    <div className="flex h-screen bg-slate-50 dark:bg-[#0b0f19] text-slate-800 dark:text-slate-100 overflow-hidden">
+      {/* Mobile Backdrop Overlay */}
+      {isMobileOpen && (
+        <div
+          onClick={() => setIsMobileOpen(false)}
+          className="fixed inset-0 z-40 bg-black/45 backdrop-blur-sm md:hidden"
+        />
+      )}
+
+      {/* Sidebar aside */}
+      <aside
+        className={`fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-[#161e31] border-r border-slate-200 dark:border-slate-800 flex flex-col justify-between p-4 transition-transform duration-300 md:translate-x-0 md:static ${
+          isMobileOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
         <div>
-          <div className="flex items-center gap-3 px-2 py-4 mb-6">
-            <span className="text-2xl">👥</span>
-            <span className="text-xl font-extrabold bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">
-              CloneMe
-            </span>
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3 px-2 py-4">
+              <span className="text-2xl">👥</span>
+              <span className="text-xl font-extrabold bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">
+                CloneMe
+              </span>
+            </div>
+            {/* Close button on mobile */}
+            <button
+              onClick={() => setIsMobileOpen(false)}
+              className="text-slate-500 hover:text-slate-800 dark:hover:text-white md:hidden text-lg font-bold p-2"
+            >
+              ✕
+            </button>
           </div>
 
           <nav className="space-y-1">
@@ -99,6 +124,7 @@ function SidebarLayout({
               <Link
                 key={to}
                 to={to}
+                onClick={() => setIsMobileOpen(false)}
                 className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors duration-200"
               >
                 <Icon className="w-5 h-5 text-indigo-500" />
@@ -142,7 +168,28 @@ function SidebarLayout({
         </div>
       </aside>
 
-      <main className="flex-1 overflow-y-auto">{children}</main>
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Mobile Header Bar */}
+        <header className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-[#161e31] md:hidden shrink-0">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setIsMobileOpen(true)}
+              className="text-slate-600 dark:text-slate-300 hover:text-indigo-500 focus:outline-none"
+            >
+              <Menu className="w-6 h-6" />
+            </button>
+            <span className="text-lg font-bold bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">
+              CloneMe
+            </span>
+          </div>
+          <div className="text-xs font-semibold px-2 py-1 bg-slate-100 dark:bg-slate-800 rounded">
+            {user?.username || "User"}
+          </div>
+        </header>
+
+        <main className="flex-1 overflow-y-auto">{children}</main>
+      </div>
     </div>
   );
 }

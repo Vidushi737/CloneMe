@@ -310,7 +310,7 @@ export default function Journals() {
       {/* CREATE JOURNAL DRAWER */}
       {isCreateOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
-          <div className="relative w-full max-w-lg bg-[#161e31] border border-slate-850 rounded-2xl shadow-2xl p-6 text-white">
+          <div className="relative w-full max-w-lg bg-[#161e31] border border-slate-850 rounded-2xl shadow-2xl p-6 text-white max-h-[90vh] overflow-y-auto">
             <button
               onClick={() => setIsCreateOpen(false)}
               className="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors"
