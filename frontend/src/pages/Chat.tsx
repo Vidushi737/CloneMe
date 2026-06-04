@@ -25,9 +25,9 @@ export default function Chat() {
   const fetchStats = async () => {
     try {
       const [j, g, h] = await Promise.all([
-        api.get('/journals'),
-        api.get('/goals'),
-        api.get('/habits')
+        api.get('/journals/'),
+        api.get('/goals/'),
+        api.get('/habits/')
       ]);
       setStats({
         journalsCount: j.data.length,

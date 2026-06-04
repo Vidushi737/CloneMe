@@ -1,0 +1,38 @@
+# Git
+.git
+.gitignore
+
+# Python virtual environments
+.venv
+.venv-1
+backend/venv
+backend/__pycache__
+backend/app/__pycache__
+backend/app/routes/__pycache__
+backend/app/services/__pycache__
+backend/chromadb_store
+backend/cloneme.db
+backend/backend_server.log
+
+# Node modules
+frontend/node_modules
+frontend/dist
+
+# IDE
+.vscode
+.idea
+
+# Archives
+*.zip
+
+# Docker
+docker-compose.yml
+
+# Docs
+docs
+
+# Misc
+desktop.ini
+package-lock.json
+README.md
+.env.example

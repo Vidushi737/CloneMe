@@ -26,8 +26,8 @@ export default function Analytics() {
     try {
       const [moodsRes, goalsRes, habitsRes] = await Promise.all([
         api.get('/moods/stats'),
-        api.get('/goals'),
-        api.get('/habits')
+        api.get('/goals/'),
+        api.get('/habits/')
       ]);
       setMoodStats(moodsRes.data);
       setGoals(goalsRes.data);

@@ -29,9 +29,9 @@ export default function Dashboard() {
   const fetchData = async () => {
     try {
       const [journalsRes, goalsRes, habitsRes] = await Promise.all([
-        api.get('/journals'),
-        api.get('/goals'),
-        api.get('/habits'),
+        api.get('/journals/'),
+        api.get('/goals/'),
+        api.get('/habits/'),
       ]);
       setJournals(journalsRes.data);
       setGoals(goalsRes.data);
